@@ -1,0 +1,24 @@
+# Query: hive
+# Including: ./my_project/new_project_f/lib
+# ContextLines: 1
+
+Результаты: 8 - Файлы 4
+
+new_project_f\lib\main.dart:
+  2  import 'package:flutter/material.dart';
+  
+  4  import 'package:provider/provider.dart';
+
+new_project_f\lib\models\wall.dart:
+
+  2  import 'wall_element.dart';
+
+new_project_f\lib\providers\place_provider.dart:
+  5  import 'package:flutter/material.dart';
+
+  7  
+
+new_project_f\lib\providers\room_provider.dart:
+  2  import 'package:flutter/material.dart';
+
+  4  
