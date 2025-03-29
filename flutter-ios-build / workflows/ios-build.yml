@@ -1,0 +1,43 @@
+name: Build and Deploy Flutter iOS App
+
+on:
+  push:
+    branches:
+      - master  # Запускать на изменения в ветке master
+  pull_request:
+    branches:
+      - master  # Запускать на запросы на слияние в ветку master
+
+jobs:
+  build:
+    runs-on: macos-latest  # Для сборки iOS приложений нужен macOS
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v2
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 'stable'
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build iOS
+        run: flutter build ios --release  # Собираем релизную версию приложения для iOS
+
+      - name: Archive iOS app
+        run: |
+          cd ios
+          xcodebuild -workspace Runner.xcworkspace -scheme Runner archive -archivePath $PWD/build/Runner.xcarchive
+
+      - name: Export IPA
+        run: |
+          xcodebuild -exportArchive -archivePath ios/build/Runner.xcarchive -exportPath ios/build/Runner.ipa -exportOptionsPlist ios/ExportOptions.plist
+
+      - name: Upload IPA as artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: runner-ipa
+          path: ios/build/Runner.ipa
